@@ -158,15 +158,17 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;
 
 /* Side panels */
 .totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.total-num{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.total-num{font:700 36px/1 var(--display);font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--cobalt),var(--h4));-webkit-background-clip:text;background-clip:text;color:transparent}
 .total-label{font-size:13px;color:var(--muted);margin-top:6px}
 
 .legend{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--muted)}
 .legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
 .legend .gap{margin-left:8px}
 .heat-wrap{overflow-x:auto;padding:2px 2px 6px}
-.heatmap{display:grid;grid-template-rows:repeat(7,12px);grid-auto-flow:column;grid-auto-columns:12px;gap:3px;width:max-content}
-.cell{border-radius:3px;background:var(--h0);cursor:pointer}
+.heatmap{display:grid;grid-template-rows:repeat(7,15px);grid-auto-flow:column;grid-auto-columns:15px;gap:4px;width:max-content}
+.cell{border-radius:5px;background:var(--h0);cursor:pointer;transition:transform .15s}
+.cell:not(.future):hover{transform:scale(1.25)}
+.legend i{border-radius:4px}
 .h1{background:var(--h1)} .h2{background:var(--h2)} .h3{background:var(--h3)} .h4{background:var(--h4)}
 .h0{background:var(--h0)}
 .rest-sw{background:repeating-linear-gradient(135deg,var(--h2) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--h2)}
@@ -305,21 +307,30 @@ button{-webkit-user-select:none;user-select:none}
 }
 
 /* This week */
-.week-top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
-.week-pct{font:700 44px/1 var(--display);font-variant-numeric:tabular-nums}
-.delta{font-size:13px;font-weight:600;margin-top:6px;color:var(--muted)}
-.delta.up{color:var(--good)}
-.delta.down{color:var(--danger)}
-.wbars{flex:1;max-width:280px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.wbar{display:flex;flex-direction:column;align-items:center;gap:5px}
-.wtrack{height:64px;width:100%;display:flex;align-items:flex-end;justify-content:center}
-.wbar i{display:block;width:100%;max-width:24px;border-radius:5px 5px 2px 2px;background:var(--h2)}
-.wbar.hit i{background:var(--cobalt)}
-.wbar.full i{background:var(--marigold)}
-.wbar.rest i{background:repeating-linear-gradient(135deg,var(--h2) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--h2)}
-.wbar.none i,.wbar.off i,.wbar.future i{background:var(--surface-2)}
-.wbar span{font-size:11px;color:var(--muted)}
-.wbar.now span{color:var(--ink);font-weight:700}
+.week-top{display:flex;flex-direction:column;gap:18px}
+.week-score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.week-pct{font:700 52px/1 var(--display);font-variant-numeric:tabular-nums;background:linear-gradient(135deg,var(--cobalt),var(--h4));-webkit-background-clip:text;background-clip:text;color:transparent}
+.delta{font-size:13px;font-weight:600;color:var(--muted);padding:4px 10px;border-radius:999px;background:var(--surface-2)}
+.delta.up{color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface))}
+.delta.down{color:var(--danger);background:color-mix(in srgb,var(--danger) 12%,var(--surface))}
+.wbars{position:relative;width:100%;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding:0 2px;
+  background:
+    linear-gradient(var(--line),var(--line)) 0 0/100% 1px no-repeat,
+    linear-gradient(var(--line),var(--line)) 0 calc(18px + 50px)/100% 1px no-repeat;
+  background-position:0 18px,0 calc(18px + 55px)}
+.wbar{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+.wbar b{font:700 11px var(--display);height:14px;line-height:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.wbar.now b{color:var(--ink)}
+.wtrack{height:110px;width:100%;display:flex;align-items:flex-end;justify-content:center;margin-top:-18px;padding-top:18px}
+.wbar i{display:block;width:100%;max-width:34px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,var(--h3),var(--h2));transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i) * 60ms)}
+.wbar.hit i{background:linear-gradient(180deg,var(--cobalt),var(--h3));box-shadow:0 4px 12px -4px var(--cobalt)}
+.wbar.full i{background:linear-gradient(180deg,var(--marigold),color-mix(in srgb,var(--marigold) 65%,var(--cobalt)));box-shadow:0 4px 14px -4px var(--marigold)}
+.wbar.rest i{background:repeating-linear-gradient(135deg,var(--h2) 0 2px,transparent 2px 5px);box-shadow:inset 0 0 0 1px var(--h2)}
+.wbar.none i,.wbar.off i,.wbar.future i{background:var(--surface-2);box-shadow:none}
+.wbar span{font-size:12px;font-weight:600;color:var(--muted)}
+.wbar.now span{color:var(--on-cobalt);background:var(--cobalt);border-radius:999px;padding:1px 8px}
+@keyframes grow{from{transform:scaleY(0);opacity:.2}to{transform:scaleY(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.wbar i{animation:none}}
 .insights{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}
 .insights:empty{display:none}
 .insights li{display:grid;grid-template-columns:24px 1fr;gap:6px;font-size:14px;line-height:1.45}
@@ -1576,8 +1587,10 @@ function renderWeek() {
       h = st === 'rest' ? 1 : (s || 0);
       label = STATE_LABEL[st] + (s !== null && st !== 'rest' && st !== 'none' ? `, ${Math.round(s * 100)}%` : '');
     }
-    const px = d <= t ? Math.max(Math.round(h * 64), 4) : 4;
-    bars += `<div class="wbar ${st}${d === t ? ' now' : ''}" title="${niceDate(d)}: ${label}"><div class="wtrack"><i style="height:${px}px"></i></div><span>${DAY_SHORT[dt.getDay()].slice(0, 2)}</span></div>`;
+    const px = d <= t ? Math.max(Math.round(h * 92), 5) : 5;
+    const sc = dayScore(d);
+    const val = d <= t && sc !== null && st !== 'rest' && st !== 'none' && st !== 'off' ? Math.round(sc * 100) : '';
+    bars += `<div class="wbar ${st}${d === t ? ' now' : ''}" title="${niceDate(d)}: ${label}"><b>${val}</b><div class="wtrack"><i style="height:${px}px;--i:${i}"></i></div><span>${DAY_SHORT[dt.getDay()].slice(0, 2)}</span></div>`;
   }
   $('weekBars').innerHTML = bars;
 
