@@ -13,15 +13,6 @@ journal of daily wins.
 | `manifest.webmanifest` | Name, icon and home-screen shortcuts |
 | `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png` | App icons |
 
-## Update your existing app
-
-1. In your GitHub repository, tap **Add file → Upload files**.
-2. Upload all the files. Files with the same name replace the old ones.
-3. Tap **Commit changes** and wait 1 to 2 minutes.
-4. Open the app while online. It updates itself and reloads.
-   If it doesn't, close it and open it again.
-
-Your data stays on your device and is kept through updates.
 
 ## First-time setup
 
