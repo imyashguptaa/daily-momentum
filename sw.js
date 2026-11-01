@@ -1,7 +1,7 @@
 // Daily Momentum offline engine.
 // Opens the app from the device's cache first (instant, works offline),
 // then fetches the latest version in the background for next time.
-const CACHE = 'daily-momentum-v3';
+const CACHE = 'daily-momentum-v4';
 const FILES = ['./index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', event => {
