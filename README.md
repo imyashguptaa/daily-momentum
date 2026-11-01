@@ -1,39 +1,42 @@
-# Daily Momentum: phone & tablet app
+# Daily Momentum
 
-This folder is an installable web app (PWA). Host it once at a free address,
-add it to your home screen, and from then on it opens like a normal app and
-works with no internet.
+A daily activity tracker that installs on your phone, tablet or laptop and
+works offline. Streaks, a weekly review, milestones, a focus timer and a
+journal of daily wins.
 
-## 1. Put it online (free, about 10 minutes, do this on your laptop)
+## What's inside
 
-1. Sign in at github.com and create a new **public** repository, e.g. `daily-momentum`.
-2. Click **Add file → Upload files** and drag in every file from this folder
-   (the files themselves, not the folder). Click **Commit changes**.
-3. Go to **Settings → Pages**. Under "Build and deployment", set Source to
-   **Deploy from a branch**, pick **main** and **/ (root)**, then **Save**.
-4. Wait 1 to 2 minutes. Your app is at
-   `https://YOUR-USERNAME.github.io/daily-momentum/`
+| File | What it does |
+|---|---|
+| `index.html` | The whole app |
+| `sw.js` | Makes it work offline and update itself |
+| `manifest.webmanifest` | Name, icon and home-screen shortcuts |
+| `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png` | App icons |
 
-Only the app's code is public. Your activity data never leaves your device.
+## Update your existing app
 
-## 2. Install it
+1. In your GitHub repository, tap **Add file → Upload files**.
+2. Upload all the files. Files with the same name replace the old ones.
+3. Tap **Commit changes** and wait 1 to 2 minutes.
+4. Open the app while online. It updates itself and reloads.
+   If it doesn't, close it and open it again.
 
-- **Android (Chrome):** open the link, tap the **Install** button in the app's
-  top bar (or ⋮ menu → **Install app** / **Add to Home screen**).
-- **iPhone / iPad (Safari):** open the link, tap **Share** → **Add to Home Screen**.
-- **Laptop (Chrome / Edge):** open the link, click the install icon in the address bar.
+Your data stays on your device and is kept through updates.
 
-Open it once while online. After that it works offline.
+## First-time setup
 
-## 3. Your data
+1. Create a **public** GitHub repository and upload these files.
+2. **Settings → Pages**: Source **Deploy from a branch**, branch **main**, folder **/ (root)**, **Save**.
+3. Open `https://YOUR-USERNAME.github.io/REPO-NAME/` and install it:
+   Android Chrome: **Install** button or ⋮ → **Install app**.
+   iPhone/iPad Safari: **Share → Add to Home Screen**.
 
-- Each device keeps its own copy. Phone and tablet do **not** sync automatically.
-- To move data: ⚙ → **Export backup** on one device, send the file to the other
-  (Drive, WhatsApp, email), then ⚙ → **Import backup** there.
-- Data from the laptop file version imports the same way.
-- Export weekly. Uninstalling the app or clearing browser data deletes the data.
+## Tips
 
-## Updating the app later
-
-Replace `index.html` in the repository. Devices pick up the new version
-the second time you open the app while online.
+- **Daily reminder:** the app can't send notifications by itself (that needs
+  a server). Set a repeating phone alarm, e.g. 9 pm, called "Log Momentum".
+- **Shortcuts:** on Android, long-press the app icon to jump straight to
+  Today, Progress or Journal.
+- **Swipe** left or right on the day card to change day.
+- **Backups:** ⚙ → Export backup once a week. Each device keeps its own data;
+  export on one and import on another to move it.

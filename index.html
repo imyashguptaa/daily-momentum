@@ -19,9 +19,9 @@
   --paper:#f2f5f9; --grid:rgba(47,75,216,.07); --surface:#ffffff; --surface-2:#eaeef5;
   --ink:#14213d; --muted:#5b6577; --line:#d5dce8;
   --cobalt:#2f4bd8; --cobalt-soft:#e4e9fd; --on-cobalt:#ffffff;
-  --marigold:#f5a524; --marigold-ink:#8a5a00; --danger:#c92a2a;
+  --marigold:#f5a524; --marigold-ink:#8a5a00; --danger:#c92a2a; --good:#1f8a5b;
   --h0:#e3e8f0; --h1:#c4d0fb; --h2:#8ea3f5; --h3:#4f6ae6; --h4:#22379f;
-  --display:"Bahnschrift","DIN Alternate","DIN Next","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  --display:"Bahnschrift","DIN Alternate","DIN Next","Roboto Condensed","sans-serif-condensed","Arial Narrow",system-ui,sans-serif;
   --body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
@@ -30,7 +30,7 @@
     --paper:#0f1626; --grid:rgba(123,147,255,.06); --surface:#161f33; --surface-2:#1f2a42;
     --ink:#e7ecf5; --muted:#9aa5b8; --line:#2a3550;
     --cobalt:#7b93ff; --cobalt-soft:#222f57; --on-cobalt:#0f1626;
-    --marigold:#ffb547; --marigold-ink:#ffcf7a; --danger:#ff6b6b;
+    --marigold:#ffb547; --marigold-ink:#ffcf7a; --danger:#ff6b6b; --good:#4cc38a;
     --h0:#1f2a42; --h1:#26386e; --h2:#3a54a8; --h3:#5f7bf0; --h4:#a3b4ff;
     color-scheme:dark;
   }
@@ -39,7 +39,7 @@
   --paper:#0f1626; --grid:rgba(123,147,255,.06); --surface:#161f33; --surface-2:#1f2a42;
   --ink:#e7ecf5; --muted:#9aa5b8; --line:#2a3550;
   --cobalt:#7b93ff; --cobalt-soft:#222f57; --on-cobalt:#0f1626;
-  --marigold:#ffb547; --marigold-ink:#ffcf7a; --danger:#ff6b6b;
+  --marigold:#ffb547; --marigold-ink:#ffcf7a; --danger:#ff6b6b; --good:#4cc38a;
   --h0:#1f2a42; --h1:#26386e; --h2:#3a54a8; --h3:#5f7bf0; --h4:#a3b4ff;
   color-scheme:dark;
 }
@@ -204,7 +204,6 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;
 .form input,.form select,.field input:not([type=range]){padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);min-width:0}
 .emoji-in{width:58px;text-align:center;font-size:18px}
 .grow-in{flex:1;min-width:120px}
-#fTarget{width:96px}
 .swatch{width:28px;height:28px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
 .swatch[aria-checked="true"]{box-shadow:0 0 0 2px var(--ink)}
 .form-error{color:var(--danger);font-size:13px;margin:0 0 8px;min-height:1em}
@@ -220,18 +219,20 @@ input[type=range]{accent-color:var(--cobalt);width:100%}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 #confetti{position:fixed;inset:0;pointer-events:none;display:none;z-index:40}
 
-@media (max-width:860px){
+@media (max-width:899px){
   .grid{grid-template-columns:minmax(0,1fr)}
   .hero{grid-template-columns:minmax(0,1fr);gap:14px;margin:22px 0}
   .streak-num{font-size:88px}
 }
 @media (max-width:520px){
   .app{padding:18px 12px 40px}
-  h1{font-size:26px}
+  h1{font-size:24px}
+  .tagline{font-size:13px}
   .panel{padding:14px}
-  .count-type{grid-template-columns:6px 30px minmax(0,1fr)}
-  .count-type .ctrl{grid-column:3;margin-top:10px}
+  .num-type{grid-template-columns:6px 30px minmax(0,1fr)}
+  .num-type .ctrl{grid-column:3;margin-top:10px;flex-wrap:wrap}
   .totals .total-num{font-size:28px}
+  .mrow .grow{flex:1 1 calc(100% - 70px)}
   .datebar{gap:6px}
   .today-btn{padding:8px 10px}
   .date-label{font-size:18px}
@@ -244,13 +245,131 @@ button{-webkit-user-select:none;user-select:none}
 .toast{bottom:calc(24px + env(safe-area-inset-bottom))}
 .icon-btn.install-btn{width:auto;padding:0 14px;font-weight:600;font-size:14px;color:var(--on-cobalt);background:var(--cobalt);border-color:var(--cobalt)}
 @media (hover:none){.keys{display:none}}
+
+/* Activity types */
+.bead.off circle.b{fill:var(--surface-2);stroke:var(--line)}
+.timer-btn{height:36px;min-width:40px;padding:0 10px;border-radius:999px;border:1.5px solid var(--c);background:transparent;cursor:pointer;font:600 14px var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.timer-btn.running{background:var(--c);color:var(--on-c)}
+.act.over .prog span{background:var(--danger)}
+.act.over .act-meta{color:var(--danger);font-weight:600}
+.act-badge{font:600 16px var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+.act.done .act-badge{color:var(--ink)}
+.items{grid-column:3 / -1;display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.item{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 8px;font-size:13.5px;cursor:pointer;background:var(--surface)}
+.item.on{background:color-mix(in srgb,var(--c) 15%,var(--surface));border-color:var(--c)}
+.item .tick{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:10px;font-weight:700;color:transparent;flex:none}
+.item.on .tick{background:var(--c);border-color:var(--c);color:var(--on-c)}
+.unsched-head{font-size:13px;color:var(--muted);padding:14px 0 2px;border-top:1px dashed var(--line);margin-top:4px}
+.act.unsched{opacity:.6}
+.add-row{margin-top:10px;width:100%;border:1.5px dashed var(--line);background:transparent;border-radius:8px;padding:11px;color:var(--cobalt);font-weight:600;cursor:pointer}
+.add-row:hover{border-color:var(--cobalt)}
+
+/* Add / edit form */
+.sub-label{font-weight:600;font-size:14px;margin:16px 0 8px}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.type-grid button{text-align:left;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.type-grid b{font:600 15px var(--display)}
+.type-grid span{font-size:12.5px;color:var(--muted);line-height:1.35}
+.type-grid button[aria-checked="true"]{border-color:var(--cobalt);background:var(--cobalt-soft);box-shadow:inset 0 0 0 1px var(--cobalt)}
+.num-fields{margin-top:12px;align-items:flex-end}
+.mini{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);flex:1;min-width:110px}
+.mini.full{width:100%;margin-top:12px}
+.mini input,.mini textarea{color:var(--ink);width:100%}
+.day-chips{display:flex;gap:6px;flex-wrap:wrap}
+.day-chips button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-weight:600;font-size:13px}
+.day-chips button[aria-pressed="true"]{background:var(--cobalt);border-color:var(--cobalt);color:var(--on-cobalt)}
+
 @media (pointer:coarse){
   .counter button{width:44px;height:44px}
   .counter input{height:44px}
+  .timer-btn{height:44px}
   .nav-btn,.icon-btn{width:44px;height:44px}
   textarea,.form input,.form select,.field input:not([type=range]){font-size:16px}
   .small-btn{padding:8px 11px}
 }
+
+/* Tabs (phones and tablets in portrait) */
+.tabbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:30;justify-content:space-around;gap:4px;padding:6px 8px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 86%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+.tabbar button{flex:1;max-width:150px;display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:none;color:var(--muted);font-size:12px;font-weight:600;padding:4px 0;cursor:pointer}
+.tabbar svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabbar .ic{display:grid;place-items:center;width:58px;height:30px;border-radius:999px;transition:background .2s}
+.tabbar button[aria-current="page"]{color:var(--cobalt)}
+.tabbar button[aria-current="page"] .ic{background:var(--cobalt-soft)}
+@media (max-width:899px){
+  .tabbar{display:flex}
+  .app{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .toast{bottom:calc(88px + env(safe-area-inset-bottom))}
+  body[data-tab="today"] [data-tab]:not([data-tab="today"]),
+  body[data-tab="progress"] [data-tab]:not([data-tab="progress"]),
+  body[data-tab="journal"] [data-tab]:not([data-tab="journal"]){display:none}
+}
+
+/* This week */
+.week-top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.week-pct{font:700 44px/1 var(--display);font-variant-numeric:tabular-nums}
+.delta{font-size:13px;font-weight:600;margin-top:6px;color:var(--muted)}
+.delta.up{color:var(--good)}
+.delta.down{color:var(--danger)}
+.wbars{flex:1;max-width:280px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wbar{display:flex;flex-direction:column;align-items:center;gap:5px}
+.wtrack{height:64px;width:100%;display:flex;align-items:flex-end;justify-content:center}
+.wbar i{display:block;width:100%;max-width:24px;border-radius:5px 5px 2px 2px;background:var(--h2)}
+.wbar.hit i{background:var(--cobalt)}
+.wbar.full i{background:var(--marigold)}
+.wbar.rest i{background:repeating-linear-gradient(135deg,var(--h2) 0 2px,transparent 2px 4px);box-shadow:inset 0 0 0 1px var(--h2)}
+.wbar.none i,.wbar.off i,.wbar.future i{background:var(--surface-2)}
+.wbar span{font-size:11px;color:var(--muted)}
+.wbar.now span{color:var(--ink);font-weight:700}
+.insights{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}
+.insights:empty{display:none}
+.insights li{display:grid;grid-template-columns:24px 1fr;gap:6px;font-size:14px;line-height:1.45}
+.insights b{font-weight:600}
+
+/* Milestones */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.badge{border:1px solid var(--line);border-radius:10px;padding:12px 8px 10px;text-align:center;background:var(--surface)}
+.badge .bi{font-size:28px;line-height:1;display:block;margin-bottom:7px}
+.badge b{display:block;font:600 13.5px/1.2 var(--display)}
+.badge small{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+.badge.locked .bi{filter:grayscale(1);opacity:.32}
+.badge.locked b{color:var(--muted)}
+.badge.got{border-color:color-mix(in srgb,var(--marigold) 55%,var(--line));background:color-mix(in srgb,var(--marigold) 9%,var(--surface))}
+
+/* Journal */
+.journal-cta{margin-bottom:6px}
+.wins{display:flex;flex-direction:column}
+.win{display:block;width:100%;text-align:left;border:none;border-bottom:1px solid var(--line);background:none;padding:13px 0;cursor:pointer}
+.win:last-child{border-bottom:none}
+.win time{display:block;font-size:12.5px;color:var(--muted);margin-bottom:3px}
+.win p{margin:0;font-size:15px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-width:62ch}
+.win:hover p{color:var(--cobalt)}
+
+/* Focus mode */
+.focus{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:none;background:var(--paper);color:var(--ink)}
+.focus::backdrop{background:var(--paper)}
+.focus-inner{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));text-align:center;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.focus-label{margin:0;color:var(--muted);font-size:14px}
+.focus h2{margin:0;font:600 26px/1.2 var(--display);max-width:22ch}
+.focus-ring{position:relative;width:min(72vw,300px);aspect-ratio:1/1;margin:8px 0}
+.focus-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.focus-ring circle{fill:none;stroke-width:7}
+.fr-bg{stroke:var(--surface-2)}
+.fr-fg{stroke:var(--c);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.focus-clock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.focus-clock strong{font:700 clamp(48px,15vw,78px)/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.focus-clock span{font-size:13px;color:var(--muted)}
+.focus-sub{margin:0;font-size:15px;color:var(--muted)}
+.focus-actions{display:flex;gap:10px;margin-top:6px}
+.focus-actions .btn{padding:13px 22px;font-size:15px}
+.focus .btn.primary{background:var(--c);border-color:var(--c);color:var(--on-c)}
+
+/* Feedback when something gets done */
+@media (prefers-reduced-motion:no-preference){
+  .act.just-done{animation:flash 1.1s ease-out}
+  .act.just-done .check,.act.just-done .bar,.item.just-on .tick{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+}
+@keyframes pop{0%{transform:scale(.4)}100%{transform:scale(1)}}
+@keyframes flash{0%{background:color-mix(in srgb,var(--c) 18%,transparent)}100%{background:transparent}}
 </style>
 </head>
 <body>
@@ -273,7 +392,7 @@ button{-webkit-user-select:none;user-select:none}
     <button class="icon-btn" id="bannerClose" type="button" aria-label="Dismiss">✕</button>
   </div>
 
-  <section class="hero" aria-label="Streak">
+  <section class="hero" aria-label="Streak" data-tab="today">
     <div class="streak-block">
       <span class="streak-num" id="curStreak">0</span>
       <div class="streak-meta">
@@ -288,7 +407,7 @@ button{-webkit-user-select:none;user-select:none}
   </section>
 
   <main class="grid">
-    <section class="panel" id="dayPanel" aria-label="Selected day">
+    <section class="panel" id="dayPanel" aria-label="Selected day" data-tab="today">
       <div class="datebar">
         <button class="nav-btn" id="prevDay" type="button" aria-label="Previous day">‹</button>
         <div class="date-mid">
@@ -314,6 +433,7 @@ button{-webkit-user-select:none;user-select:none}
       </div>
 
       <div class="acts" id="activityList"></div>
+      <button type="button" class="add-row" id="addRow">+ Add activity</button>
 
       <div class="day-extra">
         <label class="rest-toggle"><input type="checkbox" id="restToggle"><span>Rest day. Your streak carries over, but the day doesn’t add to it.</span></label>
@@ -323,13 +443,22 @@ button{-webkit-user-select:none;user-select:none}
     </section>
 
     <aside class="side">
-      <section class="panel totals" aria-label="Totals">
+      <section class="panel totals" aria-label="Totals" data-tab="progress">
         <div><div class="total-num" id="weekAvg">0%</div><div class="total-label">7-day average</div></div>
         <div><div class="total-num" id="perfectDays">0</div><div class="total-label">Perfect days</div></div>
         <div><div class="total-num" id="activeDays">0</div><div class="total-label">Days logged</div></div>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="weekPanel" data-tab="progress">
+        <div class="panel-head"><h2>This week</h2><span class="muted" id="weekRange"></span></div>
+        <div class="week-top">
+          <div class="week-score"><div class="week-pct" id="weekPct">–</div><div class="delta" id="weekDelta"></div></div>
+          <div class="wbars" id="weekBars"></div>
+        </div>
+        <ul class="insights" id="weekInsights"></ul>
+      </section>
+
+      <section class="panel" data-tab="progress">
         <div class="panel-head">
           <h2>Last 26 weeks</h2>
           <div class="legend" aria-hidden="true">Less <i class="h0"></i><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i> More <i class="rest-sw gap"></i> Rest</div>
@@ -337,21 +466,54 @@ button{-webkit-user-select:none;user-select:none}
         <div class="heat-wrap" id="heatWrap"><div class="heatmap" id="heatmap"></div></div>
       </section>
 
-      <section class="panel">
+      <section class="panel" data-tab="progress">
         <div class="panel-head">
           <h2>Each activity</h2>
           <span class="muted">30-day hit rate, streak / best</span>
         </div>
         <div id="actStats"></div>
       </section>
+      <section class="panel" data-tab="progress">
+        <div class="panel-head"><h2>Milestones</h2><span class="muted" id="badgeCount"></span></div>
+        <div class="badges" id="badges"></div>
+      </section>
+
+      <section class="panel" id="journalPanel" data-tab="journal">
+        <div class="panel-head"><h2>Journal</h2><span class="muted" id="winCount"></span></div>
+        <button type="button" class="btn primary journal-cta" id="writeWin">Write today’s win</button>
+        <div class="wins" id="wins"></div>
+      </section>
     </aside>
   </main>
 
-  <footer class="foot">
+  <footer class="foot" data-tab="progress">
     <span id="backupInfo"></span>
     <span>Works offline.<span class="keys"> Keys: ← → change day, T jumps to today.</span></span>
   </footer>
 </div>
+
+<nav class="tabbar" id="tabbar" aria-label="Sections">
+  <button type="button" data-go="today"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></span>Today</button>
+  <button type="button" data-go="progress"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg></span>Progress</button>
+  <button type="button" data-go="journal"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19.5V5a1 1 0 0 1 1-1h11v13H8.5A2.5 2.5 0 0 0 6 19.5zm0 0A2.5 2.5 0 0 0 8.5 22H18v-5"/></svg></span>Journal</button>
+</nav>
+
+<dialog id="focusDlg" class="focus" aria-labelledby="focusName">
+  <div class="focus-inner">
+    <p class="focus-label">Focus session</p>
+    <h2 id="focusName"></h2>
+    <div class="focus-ring">
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="fr-bg" cx="60" cy="60" r="54"></circle><circle class="fr-fg" id="focusFg" cx="60" cy="60" r="54"></circle></svg>
+      <div class="focus-clock"><strong id="focusClock">0:00</strong><span>this session</span></div>
+    </div>
+    <p class="focus-sub" id="focusSub"></p>
+    <div class="focus-actions">
+      <button type="button" class="btn" id="focusMin">Minimize</button>
+      <button type="button" class="btn primary" id="focusStop">Stop and save</button>
+    </div>
+    <p class="hint" id="focusHint" hidden>Your screen stays on while this is open.</p>
+  </div>
+</dialog>
 
 <dialog id="manageDlg" class="dlg" aria-labelledby="manageTitle">
   <form method="dialog" class="dlg-head"><h3 id="manageTitle">Your activities</h3><button class="icon-btn" aria-label="Close">✕</button></form>
@@ -361,16 +523,26 @@ button{-webkit-user-select:none;user-select:none}
     <h4 id="formTitle">Add activity</h4>
     <div class="row">
       <input id="fEmoji" class="emoji-in" maxlength="8" placeholder="⭐" aria-label="Emoji">
-      <input id="fName" class="grow-in" maxlength="40" placeholder="Name, e.g. Read 20 pages" aria-label="Activity name">
+      <input id="fName" class="grow-in" maxlength="40" placeholder="Name, e.g. Read" aria-label="Activity name">
     </div>
-    <div class="row">
-      <select id="fType" aria-label="How you track it">
-        <option value="check">Yes or no</option>
-        <option value="count">Number with a daily target</option>
-      </select>
-      <input id="fTarget" type="number" min="0.01" step="any" placeholder="Target" aria-label="Daily target">
-      <input id="fUnit" class="grow-in" maxlength="12" placeholder="Unit, e.g. min" aria-label="Unit">
+    <div class="sub-label" id="fTypeLabel">How do you want to track it?</div>
+    <div class="type-grid" id="fTypes" role="radiogroup" aria-labelledby="fTypeLabel">
+      <button type="button" role="radio" data-type="check"><b>Yes / no</b><span>Done or not done</span></button>
+      <button type="button" role="radio" data-type="count"><b>Count</b><span>Reach a number, like 3 applications</span></button>
+      <button type="button" role="radio" data-type="time"><b>Time</b><span>Minutes a day, with a start/stop timer</span></button>
+      <button type="button" role="radio" data-type="limit"><b>Limit</b><span>Stay under, like 60 min of reels</span></button>
+      <button type="button" role="radio" data-type="checklist"><b>Checklist</b><span>A few small steps, like a morning routine</span></button>
     </div>
+    <div class="row num-fields" id="fNum">
+      <label class="mini"><span id="fTargetLabel">Daily target</span><input id="fTarget" type="number" min="0.01" step="any" inputmode="decimal"></label>
+      <label class="mini" id="fUnitWrap"><span>Unit</span><input id="fUnit" maxlength="12" placeholder="e.g. pages"></label>
+      <label class="mini"><span>Each + / − adds</span><input id="fStep" type="number" min="0.01" step="any" inputmode="decimal"></label>
+    </div>
+    <label class="mini full" id="fListWrap"><span>Steps, one per line (up to 12)</span><textarea id="fItems" rows="4" placeholder="Make bed&#10;Plan the day&#10;10 min revision"></textarea></label>
+    <div class="sub-label" id="fDaysLabel">Repeat on</div>
+    <div class="day-chips" id="fDays" role="group" aria-labelledby="fDaysLabel"></div>
+    <p class="hint" id="fDaysHint"></p>
+    <div class="sub-label">Color</div>
     <div class="row" id="fColors" role="radiogroup" aria-label="Color"></div>
     <p class="form-error" id="formError" role="alert"></p>
     <div class="row">
@@ -382,6 +554,7 @@ button{-webkit-user-select:none;user-select:none}
 
 <dialog id="settingsDlg" class="dlg" aria-labelledby="settingsTitle">
   <form method="dialog" class="dlg-head"><h3 id="settingsTitle">Settings and backup</h3><button class="icon-btn" aria-label="Close">✕</button></form>
+  <label class="field"><span>Your name (for the greeting)</span><input id="sName" maxlength="30" placeholder="Optional"></label>
   <label class="field"><span>Dashboard name</span><input id="sTitle" maxlength="40"></label>
   <label class="field"><span>A day counts toward your streak at <strong id="sThreshVal">70%</strong></span><input id="sThresh" type="range" min="30" max="100" step="5"></label>
   <p class="hint">Below 100% on purpose. A streak that survives an imperfect day is one you keep.</p>
@@ -415,6 +588,25 @@ const LINES = [
   'Progress you can see is progress you keep.',
   'On bad days, do the smallest version. It still counts.'
 ];
+const TYPES = ['check', 'count', 'time', 'limit', 'checklist'];
+const NUMERIC = new Set(['count', 'time', 'limit']);
+const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
+const DAY_SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const TABS = ['today', 'progress', 'journal'];
+const BADGES = [
+  { id: 'streak3', icon: '🔥', name: 'Warming up', desc: '3-day streak', test: s => s.best >= 3 },
+  { id: 'streak7', icon: '⚡', name: 'Full week', desc: '7-day streak', test: s => s.best >= 7 },
+  { id: 'streak14', icon: '🚀', name: 'Two weeks', desc: '14-day streak', test: s => s.best >= 14 },
+  { id: 'streak30', icon: '🏆', name: 'A month in', desc: '30-day streak', test: s => s.best >= 30 },
+  { id: 'streak60', icon: '💎', name: 'Unbreakable', desc: '60-day streak', test: s => s.best >= 60 },
+  { id: 'streak100', icon: '👑', name: 'Hundred club', desc: '100-day streak', test: s => s.best >= 100 },
+  { id: 'perfect1', icon: '✨', name: 'First perfect day', desc: 'Every activity done', test: s => s.perfect >= 1 },
+  { id: 'perfect10', icon: '🌟', name: 'Ten perfect days', desc: '10 days at 100%', test: s => s.perfect >= 10 },
+  { id: 'comeback', icon: '🔁', name: 'Comeback', desc: 'Back on track right after a miss', test: s => s.comeback },
+  { id: 'logged30', icon: '📅', name: 'Showed up 30×', desc: '30 days logged', test: s => s.logged >= 30 },
+  { id: 'wins10', icon: '📝', name: 'Ten wins', desc: '10 wins in your journal', test: s => s.wins >= 10 },
+  { id: 'focus10h', icon: '⏱️', name: '10 focus hours', desc: 'Total time logged', test: s => s.minutes >= 600 }
+];
 
 /* ---------- helpers ---------- */
 const $ = id => document.getElementById(id);
@@ -427,30 +619,55 @@ const daysBetween = (a, b) => Math.round((parse(b) - parse(a)) / 86400000);
 const niceDate = s => parse(s).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const uid = () => 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-const fmtNum = n => Number.isInteger(n) ? String(n) : String(Math.round(n * 100) / 100);
+const round2 = n => Math.round(n * 100) / 100;
+const fmtNum = n => String(round2(n));
 const isDate = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
 const isColor = s => typeof s === 'string' && /^#[0-9a-fA-F]{6}$/.test(s);
+const cssId = s => (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&');
 const reduceMotion = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (_) { /* not supported */ } };
 function textOn(hex) {
   const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.6 ? '#14213d' : '#ffffff';
+}
+function fmtMin(m) {
+  m = Math.round(m);
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60), r = m % 60;
+  return r ? `${h}h ${r}m` : `${h}h`;
+}
+function fmtClock(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+  return h ? `${h}:${pad(m)}:${pad(s % 60)}` : `${m}:${pad(s % 60)}`;
+}
+const fmtAmt = (a, n) => a.type === 'time' ? fmtMin(n) : `${fmtNum(n)} ${a.unit}`.trim();
+const defaultStep = (type, target) => type === 'time' ? (target >= 60 ? 15 : 5) : (target >= 60 ? 15 : target >= 20 ? 5 : 1);
+function daysText(days) {
+  if (!days.length || days.length === 7) return 'every day';
+  const set = new Set(days);
+  if (set.size === 5 && [1, 2, 3, 4, 5].every(x => set.has(x))) return 'weekdays';
+  if (set.size === 2 && set.has(0) && set.has(6)) return 'weekends';
+  return DAY_ORDER.filter(x => set.has(x)).map(x => DAY_SHORT[x]).join(', ');
 }
 
 /* ---------- state ---------- */
 function defaultState() {
   const t = todayStr();
-  const mk = (name, emoji, type, target, unit, color) => ({ id: uid(), name, emoji, type, target, unit, color, createdAt: t });
+  const mk = (name, emoji, type, target, unit, color, step) =>
+    ({ id: uid(), name, emoji, type, target, unit, step, days: [], items: [], color, createdAt: t });
   return {
-    version: 1,
+    version: 3,
     activities: [
-      mk('GenAI / ML study', '📚', 'count', 120, 'min', COLORS[0]),
-      mk('English speaking practice', '🗣️', 'count', 20, 'min', COLORS[1]),
-      mk('Job applications', '💼', 'count', 3, 'sent', COLORS[2]),
-      mk('Coding / SQL problems', '💻', 'count', 2, 'solved', COLORS[4]),
-      mk('Exercise or walk', '🏃', 'check', 1, '', COLORS[5])
+      mk('GenAI / ML study', '📚', 'time', 120, 'min', COLORS[0], 15),
+      mk('English speaking practice', '🗣️', 'time', 20, 'min', COLORS[1], 5),
+      mk('Job applications', '💼', 'count', 3, 'sent', COLORS[2], 1),
+      mk('Coding / SQL problems', '💻', 'count', 2, 'solved', COLORS[4], 1),
+      mk('Exercise or walk', '🏃', 'check', 1, '', COLORS[5], 1)
     ],
     logs: {},
-    settings: { threshold: 70, theme: 'auto', title: 'Daily Momentum', lastExport: null }
+    timers: {},
+    badges: {},
+    settings: { threshold: 70, theme: 'auto', title: 'Daily Momentum', name: '', lastExport: null }
   };
 }
 
@@ -460,30 +677,61 @@ function normalize(s) {
   set.threshold = Math.min(100, Math.max(30, Math.round(Number(set.threshold) || 70)));
   if (!['auto', 'light', 'dark'].includes(set.theme)) set.theme = 'auto';
   set.title = String(set.title || 'Daily Momentum').slice(0, 40);
+  set.name = String(set.name || '').trim().slice(0, 30);
   if (!isDate(set.lastExport)) set.lastExport = null;
-  const out = { version: 1, activities: [], logs: {}, settings: set };
+  const out = { version: 3, activities: [], logs: {}, timers: {}, badges: {}, settings: set };
+
   if (s && Array.isArray(s.activities)) {
     out.activities = s.activities.filter(a => a && a.id && a.name).map(a => {
-      const count = a.type === 'count';
+      let type = TYPES.includes(a.type) ? a.type : 'check';
+      let unit = String(a.unit || '').trim().slice(0, 12);
+      // Older versions tracked minutes as a plain count; upgrade them so they get the timer.
+      if (type === 'count' && /^(min|mins|minute|minutes)$/i.test(unit)) type = 'time';
+      const numeric = NUMERIC.has(type);
+      const target = numeric ? Math.max(Number(a.target) || 1, 0.01) : 1;
+      if (type === 'time') unit = 'min';
+      if (!numeric) unit = '';
+      const step = numeric ? (Number(a.step) > 0 ? Number(a.step) : defaultStep(type, target)) : 1;
+      let days = Array.isArray(a.days)
+        ? [...new Set(a.days.map(Number).filter(n => Number.isInteger(n) && n >= 0 && n <= 6))].sort((x, y) => x - y)
+        : [];
+      if (days.length === 7) days = [];
+      const items = type === 'checklist' && Array.isArray(a.items)
+        ? a.items.filter(i => i && i.id && i.text).slice(0, 12).map(i => ({ id: String(i.id), text: String(i.text).slice(0, 40) }))
+        : [];
       return {
         id: String(a.id), name: String(a.name).slice(0, 40), emoji: String(a.emoji || '⭐').slice(0, 8),
-        type: count ? 'count' : 'check', target: count ? Math.max(Number(a.target) || 1, 0.01) : 1,
-        unit: count ? String(a.unit || '').slice(0, 12) : '', color: isColor(a.color) ? a.color : COLORS[0],
+        type, target, unit, step, days, items,
+        color: isColor(a.color) ? a.color : COLORS[0],
         createdAt: isDate(a.createdAt) ? a.createdAt : todayStr()
       };
     });
   } else {
     out.activities = base.activities;
   }
+
   if (s && s.logs && typeof s.logs === 'object') {
     for (const [k, v] of Object.entries(s.logs)) {
       if (!isDate(k) || !v || typeof v !== 'object') continue;
-      const values = {};
+      const values = {}, checks = {};
       if (v.values && typeof v.values === 'object') {
         for (const [id, n] of Object.entries(v.values)) { const x = Number(n); if (x > 0) values[id] = x; }
       }
-      out.logs[k] = { values, note: String(v.note || ''), rest: !!v.rest };
+      if (v.checks && typeof v.checks === 'object') {
+        for (const [id, arr] of Object.entries(v.checks)) if (Array.isArray(arr) && arr.length) checks[id] = arr.map(String);
+      }
+      out.logs[k] = { values, checks, note: String(v.note || ''), rest: !!v.rest };
     }
+  }
+
+  if (s && s.timers && typeof s.timers === 'object') {
+    for (const [id, t] of Object.entries(s.timers)) {
+      const a = out.activities.find(x => x.id === id);
+      if (a && a.type === 'time' && t && Number.isFinite(Number(t.start)) && isDate(t.date)) out.timers[id] = { start: Number(t.start), date: t.date };
+    }
+  }
+  if (s && s.badges && typeof s.badges === 'object') {
+    for (const b of BADGES) if (isDate(s.badges[b.id])) out.badges[b.id] = s.badges[b.id];
   }
   return out;
 }
@@ -506,64 +754,97 @@ let startupWarning = '';
   } else {
     state = defaultState();
   }
-  if (!storageOK) startupWarning = 'This browser is blocking storage for this page, so changes won’t survive a reload. Open the file directly in Chrome, Edge or Firefox, or export a backup before closing.';
+  if (!storageOK) startupWarning = 'This browser is blocking storage for this page, so changes won’t survive a reload. Open it in Chrome, Edge, Firefox or Safari, or export a backup before closing.';
 }
 
 function save() {
   if (!storageOK) return;
   try { localStorage.setItem(KEY, JSON.stringify(state)); }
-  catch (e) { showBanner('Couldn’t save: browser storage is full or blocked. Export a backup from Settings now.'); }
+  catch (e) { showBanner('Couldn’t save: storage is full or blocked. Export a backup from Settings now.'); }
 }
 
 /* ---------- scoring & streaks ---------- */
 const thr = () => state.settings.threshold / 100;
 const getLog = (d, create) => {
   let l = state.logs[d];
-  if (!l && create) l = state.logs[d] = { values: {}, note: '', rest: false };
+  if (!l && create) l = state.logs[d] = { values: {}, checks: {}, note: '', rest: false };
+  if (l && !l.checks) l.checks = {};
   return l;
 };
-const cleanup = d => { const l = state.logs[d]; if (l && !l.rest && !l.note && !Object.keys(l.values).length) delete state.logs[d]; };
+const cleanup = d => {
+  const l = state.logs[d];
+  if (l && !l.rest && !l.note && !Object.keys(l.values).length && !Object.keys(l.checks || {}).length) delete state.logs[d];
+};
 const isRest = d => !!(state.logs[d] && state.logs[d].rest);
-const val = (a, d) => { const l = state.logs[d]; return l && l.values[a.id] ? l.values[a.id] : 0; };
-const actDone = (a, d) => val(a, d) >= a.target - 1e-9;
+const scheduled = (a, d) => !a.days.length || a.days.includes(parse(d).getDay());
 
+function checkedIds(a, d) {
+  const l = state.logs[d];
+  const ids = (l && l.checks && l.checks[a.id]) || [];
+  const valid = new Set(a.items.map(i => i.id));
+  return ids.filter(id => valid.has(id));
+}
+function val(a, d) {
+  if (a.type === 'checklist') return checkedIds(a, d).length;
+  const l = state.logs[d];
+  return l && l.values[a.id] ? l.values[a.id] : 0;
+}
+function prog(a, d) {
+  const v = val(a, d);
+  switch (a.type) {
+    case 'check': return v >= 1 ? 1 : 0;
+    case 'limit': return v <= a.target + 1e-9 ? 1 : Math.max(0, 1 - (v - a.target) / a.target);
+    case 'checklist': return a.items.length ? Math.min(v / a.items.length, 1) : 0;
+    default: return Math.min(v / a.target, 1);
+  }
+}
+function actDone(a, d) {
+  const v = val(a, d);
+  if (a.type === 'limit') return v <= a.target + 1e-9;
+  if (a.type === 'checklist') return a.items.length > 0 && v >= a.items.length;
+  return v >= a.target - 1e-9;
+}
 function dayScore(d) {
-  const acts = state.activities.filter(a => a.createdAt <= d);
+  const acts = state.activities.filter(a => a.createdAt <= d && scheduled(a, d));
   if (!acts.length) return null;
   let s = 0;
-  for (const a of acts) s += Math.min(val(a, d) / a.target, 1);
+  for (const a of acts) s += prog(a, d);
   return s / acts.length;
 }
 const dayHit = d => { const s = dayScore(d); return s !== null && s >= thr() - 1e-9; };
 function earliest() { let e = todayStr(); for (const a of state.activities) if (a.createdAt < e) e = a.createdAt; return e; }
 
-// Today never breaks a streak while it's still in progress; rest days are skipped.
-function currentStreak(test, from) {
+// Today never breaks a streak while it's still in progress. Skipped days (rest, not scheduled) are passed over.
+function currentStreak(test, from, skip) {
   const t = todayStr(); let n = 0;
   for (let i = 0, d = t; i < 3660 && d >= from; i++, d = addDays(d, -1)) {
-    if (isRest(d)) continue;
+    if (skip(d)) continue;
     if (test(d)) n++; else if (d !== t) break;
   }
   return n;
 }
-function bestStreak(test, from) {
+function bestStreak(test, from, skip) {
   const t = todayStr(); let run = 0, best = 0;
   for (let i = 0, d = from; i < 3660 && d <= t; i++, d = addDays(d, 1)) {
-    if (isRest(d)) continue;
+    if (skip(d)) continue;
     if (test(d)) { run++; if (run > best) best = run; } else if (d !== t) run = 0;
   }
   return best;
 }
-function dayState(d) {
+const overallSkip = d => isRest(d) || dayScore(d) === null;
+const actSkip = a => d => isRest(d) || !scheduled(a, d);
+
+function dayState(d, first) {
+  if (d < first) return 'none';
   if (isRest(d)) return 'rest';
   const s = dayScore(d);
-  if (s === null) return 'none';
+  if (s === null) return 'off';
   if (s >= 0.9999) return 'full';
   if (s >= thr() - 1e-9) return 'hit';
   if (d === todayStr()) return 'pending';
   return 'miss';
 }
-const STATE_LABEL = { rest: 'Rest day', none: 'Before tracking started', full: 'Perfect day', hit: 'Counted', pending: 'In progress', miss: 'Missed' };
+const STATE_LABEL = { rest: 'Rest day', none: 'Before tracking started', off: 'Nothing scheduled', full: 'Perfect day', hit: 'Counted', pending: 'In progress', miss: 'Missed' };
 
 /* ---------- rendering ---------- */
 let selected = todayStr();
@@ -587,19 +868,22 @@ function renderHeader() {
   document.title = state.settings.title;
   const t = parse(todayStr());
   const doy = Math.floor((t - new Date(t.getFullYear(), 0, 0)) / 86400000);
-  $('tagline').textContent = LINES[doy % LINES.length];
+  const hr = new Date().getHours();
+  const hello = hr < 5 ? 'Up late' : hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  const nm = state.settings.name;
+  $('tagline').textContent = `${hello}${nm ? ', ' + nm : ''}. ${LINES[doy % LINES.length]}`;
 }
 
 function renderHero() {
-  const from = earliest();
-  $('curStreak').textContent = currentStreak(dayHit, from);
-  const best = bestStreak(dayHit, from);
+  const first = earliest();
+  $('curStreak').textContent = currentStreak(dayHit, first, overallSkip);
+  const best = bestStreak(dayHit, first, overallSkip);
   $('bestStreak').textContent = `Best: ${best} ${best === 1 ? 'day' : 'days'}`;
 
   const t = todayStr(), n = window.innerWidth < 560 ? 7 : 14, gap = 40, W = n * gap, r = 13, cy = 22;
   const days = [];
-  for (let i = 0; i < n; i++) { const d = addDays(t, i - (n - 1)); days.push({ d, st: dayState(d) }); }
-  const linked = st => st === 'hit' || st === 'full' || st === 'rest';
+  for (let i = 0; i < n; i++) { const d = addDays(t, i - (n - 1)); days.push({ d, st: dayState(d, first) }); }
+  const linked = st => st === 'hit' || st === 'full' || st === 'rest' || st === 'off';
   let links = '', beads = '';
   for (let i = 1; i < n; i++) {
     const x1 = (i - 1) * gap + gap / 2 + r, x2 = i * gap + gap / 2 - r;
@@ -620,6 +904,58 @@ function renderHero() {
   $('chainCaption').textContent = `Last ${n} days. A day joins the chain at ${state.settings.threshold}% done, or as a rest day.`;
 }
 
+function actRow(a, sched) {
+  const d = selected, v = val(a, d), done = actDone(a, d), p = prog(a, d);
+  const cs = sched ? currentStreak(x => actDone(a, x), a.createdAt, actSkip(a)) : 0;
+  const streak = cs > 0 ? `, ${cs}-day streak` : '';
+  const kind = a.type === 'check' ? 'check-type' : a.type === 'checklist' ? 'list-type' : 'num-type';
+  const over = a.type === 'limit' && v > a.target + 1e-9;
+  const cls = `act ${kind}${done ? ' done' : ''}${over ? ' over' : ''}${sched ? '' : ' unsched'}`;
+  const style = `--c:${a.color};--on-c:${textOn(a.color)}`;
+  const head = `<span class="bar"></span><span class="act-emoji">${esc(a.emoji)}</span>`;
+  const name = `<div class="act-name">${esc(a.name)}</div>`;
+
+  if (a.type === 'check') {
+    return `<div class="${cls}" style="${style}" data-row="${esc(a.id)}" data-act="toggle" data-id="${esc(a.id)}" role="button" tabindex="0" aria-pressed="${done}">${head}`
+      + `<div class="act-info">${name}<div class="act-meta">${done ? 'Done' : 'Not done yet'}${streak}</div></div>`
+      + `<div class="ctrl"><span class="check" aria-hidden="true">✓</span></div></div>`;
+  }
+
+  if (a.type === 'checklist') {
+    const on = new Set(checkedIds(a, d));
+    const items = a.items.map(it =>
+      `<button type="button" class="item${on.has(it.id) ? ' on' : ''}" data-act="item" data-id="${esc(a.id)}" data-item="${esc(it.id)}" aria-pressed="${on.has(it.id)}"><span class="tick" aria-hidden="true">✓</span>${esc(it.text)}</button>`
+    ).join('');
+    return `<div class="${cls}" style="${style}" data-row="${esc(a.id)}">${head}`
+      + `<div class="act-info">${name}<div class="act-meta">${v} of ${a.items.length} steps done${streak}</div>`
+      + `<div class="prog"><span style="width:${(p * 100).toFixed(1)}%"></span></div></div>`
+      + `<div class="ctrl"><span class="act-badge">${v}/${a.items.length}</span></div>`
+      + `<div class="items">${items}</div></div>`;
+  }
+
+  let meta;
+  if (a.type === 'time') meta = `${fmtMin(v)} of ${fmtMin(a.target)}`;
+  else if (a.type === 'limit') meta = over ? `Over the limit by ${fmtAmt(a, v - a.target)}` : `${fmtAmt(a, v)} used, max ${fmtAmt(a, a.target)}`;
+  else meta = `${fmtNum(v)} of ${fmtAmt(a, a.target)}`;
+  const timer = state.timers[a.id];
+  if (timer) meta += ', timer running';
+  const fill = a.type === 'limit' ? Math.min(v / a.target, 1) : p;
+  let timerBtn = '';
+  if (a.type === 'time' && (d === todayStr() || timer)) {
+    timerBtn = timer
+      ? `<button type="button" class="timer-btn running" data-act="timer" data-id="${esc(a.id)}" data-timer="${esc(a.id)}" aria-label="Open timer for ${esc(a.name)}">⏱ ${fmtClock(Date.now() - timer.start)}</button>`
+      : `<button type="button" class="timer-btn" data-act="timer" data-id="${esc(a.id)}" aria-label="Start timer for ${esc(a.name)}" title="Start timer">▶</button>`;
+  }
+  return `<div class="${cls}" style="${style}" data-row="${esc(a.id)}">${head}`
+    + `<div class="act-info">${name}<div class="act-meta">${meta}${streak}</div>`
+    + `<div class="prog"><span style="width:${(fill * 100).toFixed(1)}%"></span></div></div>`
+    + `<div class="ctrl counter">`
+    + `<button type="button" data-act="dec" data-id="${esc(a.id)}" aria-label="Decrease ${esc(a.name)}">−</button>`
+    + `<input type="number" inputmode="decimal" min="0" step="any" value="${fmtNum(v)}" data-id="${esc(a.id)}" aria-label="${esc(a.name)}, ${a.type === 'time' ? 'minutes' : 'amount'}">`
+    + `<button type="button" data-act="inc" data-id="${esc(a.id)}" aria-label="Increase ${esc(a.name)}">+</button>`
+    + `${timerBtn}</div></div>`;
+}
+
 function renderDay() {
   const t = todayStr(), isToday = selected === t, ago = daysBetween(selected, t);
   $('dateLabel').textContent = parse(selected).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
@@ -637,16 +973,19 @@ function renderDay() {
   fg.setAttribute('class', 'ring-fg' + (s !== null && s >= 0.9999 ? ' full' : hit ? ' hit' : ''));
   $('dayPct').textContent = (s === null ? 0 : Math.round(s * 100)) + '%';
 
+  const sched = state.activities.filter(a => scheduled(a, selected));
+  const unsched = state.activities.filter(a => !scheduled(a, selected));
   let status;
   if (resting) status = 'Rest day. Streak protected.';
-  else if (s === null) status = 'Add an activity to start';
+  else if (!state.activities.length) status = 'Add an activity to start';
+  else if (s === null) status = 'Nothing scheduled. Enjoy the day off.';
   else if (s >= 0.9999) status = 'Perfect day ✨';
   else if (hit) status = 'Streak secured. Keep going.';
   else if (isToday) status = `Reach ${state.settings.threshold}% to keep the streak`;
   else status = 'Below the bar. Never miss twice.';
   $('dayStatus').textContent = status;
-  const doneN = state.activities.filter(a => actDone(a, selected)).length;
-  $('daySub').textContent = state.activities.length ? `${doneN} of ${state.activities.length} activities done` : '';
+  const doneN = sched.filter(a => actDone(a, selected)).length;
+  $('daySub').textContent = sched.length ? `${doneN} of ${sched.length} activities done` : '';
 
   $('dayPanel').classList.toggle('resting', resting);
   $('restToggle').checked = resting;
@@ -654,31 +993,17 @@ function renderDay() {
 
   const list = $('activityList');
   if (!state.activities.length) {
-    list.innerHTML = '<p class="empty">No activities yet. Use the ✎ button to add the few things you want to do every day.</p>';
+    list.innerHTML = '<p class="empty">No activities yet. Tap “Add activity” to set up the few things you want to do every day.</p>';
     return;
   }
-  list.innerHTML = state.activities.map(a => {
-    const v = val(a, selected), done = actDone(a, selected), pct = Math.min(v / a.target, 1) * 100;
-    const cs = currentStreak(d => actDone(a, d), a.createdAt);
-    const streak = cs > 0 ? `, ${cs}-day streak` : '';
-    const style = `--c:${a.color};--on-c:${textOn(a.color)}`;
-    if (a.type === 'check') {
-      return `<div class="act check-type${done ? ' done' : ''}" style="${style}" data-act="toggle" data-id="${a.id}" role="button" tabindex="0" aria-pressed="${done}">`
-        + `<span class="bar"></span><span class="act-emoji">${esc(a.emoji)}</span>`
-        + `<div class="act-info"><div class="act-name">${esc(a.name)}</div><div class="act-meta">${done ? 'Done' : 'Not done yet'}${streak}</div></div>`
-        + `<div class="ctrl"><span class="check" aria-hidden="true">✓</span></div></div>`;
-    }
-    return `<div class="act count-type${done ? ' done' : ''}" style="${style}">`
-      + `<span class="bar"></span><span class="act-emoji">${esc(a.emoji)}</span>`
-      + `<div class="act-info"><div class="act-name">${esc(a.name)}</div>`
-      + `<div class="act-meta">${fmtNum(v)} of ${fmtNum(a.target)} ${esc(a.unit)}${streak}</div>`
-      + `<div class="prog"><span style="width:${pct.toFixed(1)}%"></span></div></div>`
-      + `<div class="ctrl counter">`
-      + `<button type="button" data-act="dec" data-id="${a.id}" aria-label="Decrease ${esc(a.name)}">−</button>`
-      + `<input type="number" inputmode="decimal" min="0" step="any" value="${fmtNum(v)}" data-id="${a.id}" aria-label="${esc(a.name)} amount">`
-      + `<button type="button" data-act="inc" data-id="${a.id}" aria-label="Increase ${esc(a.name)}">+</button>`
-      + `</div></div>`;
-  }).join('');
+  let html = sched.map(a => actRow(a, true)).join('');
+  if (!sched.length) html += '<p class="empty">Nothing scheduled for this day.</p>';
+  if (unsched.length) {
+    const wd = parse(selected).toLocaleDateString(undefined, { weekday: 'long' });
+    html += `<div class="unsched-head">Not scheduled on ${esc(wd)}s. Logging these is optional and won’t change your score.</div>`
+      + unsched.map(a => actRow(a, false)).join('');
+  }
+  list.innerHTML = html;
 }
 
 function renderTotals() {
@@ -688,14 +1013,14 @@ function renderTotals() {
     if (isRest(d)) continue;
     const s = dayScore(d);
     if (s === null) continue;
-    if (d === t && !dayHit(d)) continue; // don't let an unfinished today drag the average down
+    if (d === t && !dayHit(d)) continue; // an unfinished today shouldn't drag the average down
     sum += s; n++;
   }
   $('weekAvg').textContent = n ? Math.round((sum / n) * 100) + '%' : '–';
   let perfect = 0, active = 0;
   for (const [d, l] of Object.entries(state.logs)) {
     if (l.rest) continue;
-    if (Object.keys(l.values).length) active++;
+    if (Object.keys(l.values).length || Object.keys(l.checks || {}).length) active++;
     const s = dayScore(d);
     if (s !== null && s >= 0.9999) perfect++;
   }
@@ -704,23 +1029,28 @@ function renderTotals() {
 }
 
 function renderHeat() {
-  const t = todayStr(), dow = parse(t).getDay(), start = addDays(t, -(7 * 25 + dow));
+  const t = todayStr(), first = earliest(), dow = parse(t).getDay(), start = addDays(t, -(7 * 25 + dow));
   let html = '';
   for (let i = 0, d = start; i < 26 * 7; i++, d = addDays(d, 1)) {
     if (d > t) { html += '<div class="cell future"></div>'; continue; }
     let cls, label;
     if (isRest(d)) { cls = 'rest-sw'; label = 'Rest day'; }
+    else if (d < first) { cls = 'h0'; label = 'Not tracking yet'; }
     else {
-      const s = dayScore(d), p = s === null ? 0 : s;
-      cls = p <= 0 ? 'h0' : p < 0.34 ? 'h1' : p < 0.67 ? 'h2' : p < 0.9999 ? 'h3' : 'h4';
-      label = s === null ? 'Not tracking yet' : Math.round(p * 100) + '%';
+      const s = dayScore(d);
+      if (s === null) { cls = 'h0'; label = 'Nothing scheduled'; }
+      else {
+        cls = s <= 0 ? 'h0' : s < 0.34 ? 'h1' : s < 0.67 ? 'h2' : s < 0.9999 ? 'h3' : 'h4';
+        label = Math.round(s * 100) + '%';
+      }
     }
     if (d === t) cls += ' today';
     if (d === selected) cls += ' sel';
     html += `<div class="cell ${cls}" data-date="${d}" title="${niceDate(d)}: ${label}"></div>`;
   }
   $('heatmap').innerHTML = html;
-  if (!heatScrolled) { const w = $('heatWrap'); w.scrollLeft = w.scrollWidth; heatScrolled = true; }
+  const w = $('heatWrap');
+  if (!heatScrolled && w.offsetParent) { w.scrollLeft = w.scrollWidth; heatScrolled = true; }
 }
 
 function renderActStats() {
@@ -731,14 +1061,14 @@ function renderActStats() {
     for (let i = 0; i < 30; i++) {
       const d = addDays(t, -i);
       if (d < a.createdAt) break;
-      if (isRest(d)) continue;
+      if (isRest(d) || !scheduled(a, d)) continue;
       const h = actDone(a, d);
       if (d === t && !h) continue;
       days++; if (h) hits++;
     }
     const rate = days ? Math.round((hits / days) * 100) : 0;
-    const test = d => actDone(a, d);
-    const cs = currentStreak(test, a.createdAt), bs = bestStreak(test, a.createdAt);
+    const test = d => actDone(a, d), skip = actSkip(a);
+    const cs = currentStreak(test, a.createdAt, skip), bs = bestStreak(test, a.createdAt, skip);
     return `<div class="arow" style="--c:${a.color}"><span class="act-emoji">${esc(a.emoji)}</span>`
       + `<div><div class="an">${esc(a.name)}</div><div class="rate"><span style="width:${rate}%"></span></div></div>`
       + `<span class="ap">${days ? rate + '%' : '–'}</span>`
@@ -763,23 +1093,32 @@ function renderFoot() {
 
 function renderAll() {
   applyTheme(); renderHeader(); renderHero(); renderDay();
-  renderTotals(); renderHeat(); renderActStats(); renderFoot();
+  renderTotals(); renderWeek(); renderHeat(); renderActStats(); renderBadges(); renderJournal(); renderFoot();
 }
 
 /* ---------- feedback ---------- */
 function showBanner(msg) { $('bannerText').textContent = msg; $('banner').hidden = false; }
 $('bannerClose').addEventListener('click', () => { $('banner').hidden = true; });
 
-let toastTimer;
+const toastQueue = [];
+let toastBusy = false;
 function toast(msg) {
-  const el = $('toast');
+  if (toastQueue.length >= 2) toastQueue.shift();
+  toastQueue.push(msg);
+  if (!toastBusy) nextToast();
+}
+function nextToast() {
+  const el = $('toast'), msg = toastQueue.shift();
+  if (msg === undefined) { toastBusy = false; return; }
+  toastBusy = true;
   el.textContent = msg; el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(nextToast, 260); }, 2300);
 }
 
+let confettiOn = false;
 function confetti() {
-  if (reduceMotion) return;
+  if (reduceMotion || confettiOn) return;
+  confettiOn = true;
   const cv = $('confetti'), ctx = cv.getContext('2d');
   cv.width = innerWidth; cv.height = innerHeight; cv.style.display = 'block';
   const ps = Array.from({ length: 150 }, () => ({
@@ -797,7 +1136,7 @@ function confetti() {
       ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore();
     }
     if (++f < 170) requestAnimationFrame(frame);
-    else { ctx.clearRect(0, 0, cv.width, cv.height); cv.style.display = 'none'; }
+    else { ctx.clearRect(0, 0, cv.width, cv.height); cv.style.display = 'none'; confettiOn = false; }
   })();
 }
 
@@ -809,26 +1148,88 @@ function go(d) {
   renderAll();
 }
 
-function setValue(a, v) {
-  v = Math.max(0, Math.round(v * 100) / 100);
-  const d = selected, beforeScore = dayScore(d), beforeHit = dayHit(d);
-  const l = getLog(d, true);
-  if (v > 0) { l.values[a.id] = v; if (d < a.createdAt) a.createdAt = d; }
-  else delete l.values[a.id];
+// Apply a change to one day, celebrate if it crossed a line, and re-render keeping focus.
+function mutate(d, fn, a) {
+  const beforeScore = dayScore(d), beforeHit = dayHit(d), wasDone = a ? actDone(a, d) : false;
+  fn(getLog(d, true));
   cleanup(d); save();
-  const afterScore = dayScore(d);
+  let celebrated = false;
   if (!isRest(d)) {
-    if (afterScore !== null && afterScore >= 0.9999 && !(beforeScore >= 0.9999)) { toast('Perfect day. Everything done.'); confetti(); }
-    else if (!beforeHit && dayHit(d)) toast(d === todayStr() ? 'Streak secured for today 🔥' : 'That day now counts toward your streak');
+    const afterScore = dayScore(d);
+    if (afterScore !== null && afterScore >= 0.9999 && !(beforeScore >= 0.9999)) {
+      toast('Perfect day. Everything done.'); confetti(); buzz([18, 50, 18]); celebrated = true;
+    } else if (!beforeHit && dayHit(d)) {
+      toast(d === todayStr() ? 'Streak secured for today 🔥' : 'That day now counts toward your streak'); buzz([12, 40, 12]); celebrated = true;
+    }
   }
-  const ae = document.activeElement;
-  const focusAct = ae && ae.dataset ? ae.dataset.act : null, focusId = ae && ae.dataset ? ae.dataset.id : null;
+  if (checkBadges(false)) celebrated = true;
+  const nowDone = a ? actDone(a, d) : false;
+  if (a && nowDone && !wasDone && !celebrated) buzz(12);
+  const ae = document.activeElement, ds = (ae && ae.dataset) || {};
   renderAll();
-  if (focusAct && focusId) {
-    const el = $('activityList').querySelector(`[data-id="${focusId}"][data-act="${focusAct}"]`);
+  if (ds.act && ds.id) {
+    const sel = `[data-id="${cssId(ds.id)}"][data-act="${cssId(ds.act)}"]` + (ds.item ? `[data-item="${cssId(ds.item)}"]` : '');
+    const el = $('activityList').querySelector(sel);
     if (el) el.focus();
   }
+  if (a && nowDone && !wasDone && d === selected) {
+    const row = $('activityList').querySelector(`[data-row="${cssId(a.id)}"]`);
+    if (row) row.classList.add('just-done');
+  }
+  return celebrated;
 }
+
+function setValueFor(a, d, v) {
+  v = Math.max(0, round2(v));
+  return mutate(d, l => {
+    if (v > 0) { l.values[a.id] = v; if (d < a.createdAt) a.createdAt = d; }
+    else delete l.values[a.id];
+  }, a);
+}
+
+function toggleItem(a, d, itemId) {
+  const wasOn = checkedIds(a, d).includes(itemId);
+  const r = mutate(d, l => {
+    const cur = new Set(l.checks[a.id] || []);
+    if (cur.has(itemId)) cur.delete(itemId); else cur.add(itemId);
+    if (cur.size) { l.checks[a.id] = [...cur]; if (d < a.createdAt) a.createdAt = d; }
+    else delete l.checks[a.id];
+  }, a);
+  if (!wasOn) {
+    const el = $('activityList').querySelector(`[data-act="item"][data-item="${cssId(itemId)}"]`);
+    if (el) el.classList.add('just-on');
+    if (!r) buzz(8);
+  }
+  return r;
+}
+
+function toggleTimer(a) {
+  if (state.timers[a.id]) { openFocus(a); return; }
+  state.timers[a.id] = { start: Date.now(), date: todayStr() };
+  save(); renderAll(); buzz(10);
+  openFocus(a);
+}
+
+function stopTimer(a) {
+  const t = state.timers[a.id];
+  if (!t) return;
+  const mins = Math.round((Date.now() - t.start) / 60000);
+  delete state.timers[a.id];
+  if (mins > 360 && !confirm(`This timer ran for ${fmtMin(mins)}. Add all of it to “${a.name}”?`)) {
+    save(); renderAll(); toast('Timer discarded'); return;
+  }
+  if (mins < 1) { save(); renderAll(); toast('Timer stopped. Under a minute, so nothing was added.'); return; }
+  const celebrated = setValueFor(a, t.date, val(a, t.date) + mins);
+  if (!celebrated) toast(`Added ${fmtMin(mins)} to ${a.name}`);
+}
+
+setInterval(() => {
+  document.querySelectorAll('[data-timer]').forEach(el => {
+    const t = state.timers[el.dataset.timer];
+    if (t) el.textContent = '⏱ ' + fmtClock(Date.now() - t.start);
+  });
+  updateFocus();
+}, 1000);
 
 const list = $('activityList');
 list.addEventListener('click', e => {
@@ -836,16 +1237,18 @@ list.addEventListener('click', e => {
   if (!el) return;
   const a = state.activities.find(x => x.id === el.dataset.id);
   if (!a) return;
-  const v = val(a, selected), step = a.target >= 60 ? 15 : a.target >= 20 ? 5 : 1;
-  if (el.dataset.act === 'toggle') setValue(a, v >= 1 ? 0 : 1);
-  else if (el.dataset.act === 'inc') setValue(a, v + step);
-  else if (el.dataset.act === 'dec') setValue(a, v - step);
+  const act = el.dataset.act, v = val(a, selected);
+  if (act === 'toggle') setValueFor(a, selected, v >= 1 ? 0 : 1);
+  else if (act === 'inc') setValueFor(a, selected, v + a.step);
+  else if (act === 'dec') setValueFor(a, selected, v - a.step);
+  else if (act === 'item') toggleItem(a, selected, el.dataset.item);
+  else if (act === 'timer') toggleTimer(a);
 });
 list.addEventListener('change', e => {
   const inp = e.target.closest('input[data-id]');
   if (!inp) return;
   const a = state.activities.find(x => x.id === inp.dataset.id);
-  if (a) setValue(a, parseFloat(inp.value) || 0);
+  if (a) setValueFor(a, selected, parseFloat(inp.value) || 0);
 });
 list.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('check-type')) { e.preventDefault(); e.target.click(); }
@@ -858,10 +1261,13 @@ $('restToggle').addEventListener('change', e => {
   cleanup(selected); save(); renderAll();
   if (e.target.checked) toast('Rest day logged. Streak protected.');
 });
+let noteTimer;
 $('noteInput').addEventListener('input', e => {
   const l = getLog(selected, true);
   l.note = e.target.value;
   cleanup(selected); save();
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(() => { renderJournal(); if (checkBadges(false)) renderBadges(); }, 900);
 });
 
 $('prevDay').addEventListener('click', () => go(addDays(selected, -1)));
@@ -888,38 +1294,62 @@ document.addEventListener('keydown', e => {
   else if (e.key === 't' || e.key === 'T') go(todayStr());
 });
 
-/* ---------- manage activities ---------- */
-let editingId = null, pickColor = COLORS[0];
+/* ---------- add & edit activities ---------- */
+let editingId = null, pickColor = COLORS[0], fType = 'check', fDays = new Set(DAY_ORDER);
 
 function renderSwatches() {
   $('fColors').innerHTML = COLORS.map(c =>
     `<button type="button" class="swatch" role="radio" aria-checked="${c === pickColor}" aria-label="Color ${c}" style="background:${c}" data-color="${c}"></button>`
   ).join('');
 }
-function syncTypeFields() {
-  const isCount = $('fType').value === 'count';
-  $('fTarget').hidden = !isCount; $('fUnit').hidden = !isCount;
+function renderTypeFields() {
+  $('fTypes').querySelectorAll('[data-type]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.type === fType)));
+  $('fNum').hidden = !NUMERIC.has(fType);
+  $('fListWrap').hidden = fType !== 'checklist';
+  $('fUnitWrap').hidden = fType === 'time';
+  $('fTargetLabel').textContent = fType === 'time' ? 'Minutes per day' : fType === 'limit' ? 'Daily maximum' : 'Daily target';
+  $('fTarget').placeholder = fType === 'count' ? '3' : '60';
+  $('fStep').placeholder = String(defaultStep(fType, parseFloat($('fTarget').value) || (fType === 'count' ? 3 : 60)));
+}
+function renderDayChips() {
+  $('fDays').innerHTML = DAY_ORDER.map(dn =>
+    `<button type="button" data-day="${dn}" aria-pressed="${fDays.has(dn)}" aria-label="${DAY_SHORT[dn]}">${DAY_SHORT[dn].slice(0, 2)}</button>`
+  ).join('');
+  $('fDaysHint').textContent = fDays.size === 7
+    ? 'Every day. Tap days to switch them off.'
+    : `Only on ${daysText([...fDays])}. Other days won’t count against you.`;
 }
 function resetForm() {
-  editingId = null;
-  $('fEmoji').value = ''; $('fName').value = ''; $('fType').value = 'check';
-  $('fTarget').value = ''; $('fUnit').value = ''; $('formError').textContent = '';
+  editingId = null; fType = 'check'; fDays = new Set(DAY_ORDER);
+  for (const id of ['fEmoji', 'fName', 'fTarget', 'fUnit', 'fStep', 'fItems']) $(id).value = '';
+  $('formError').textContent = '';
   pickColor = COLORS[state.activities.length % COLORS.length];
-  renderSwatches(); syncTypeFields();
+  renderSwatches(); renderTypeFields(); renderDayChips();
   $('formTitle').textContent = 'Add activity';
   $('saveAct').textContent = 'Add activity';
   $('cancelEdit').hidden = true;
 }
 function startEdit(a) {
-  editingId = a.id;
-  $('fEmoji').value = a.emoji; $('fName').value = a.name; $('fType').value = a.type;
-  $('fTarget').value = a.type === 'count' ? a.target : ''; $('fUnit').value = a.unit;
+  editingId = a.id; fType = a.type; fDays = new Set(a.days.length ? a.days : DAY_ORDER);
+  $('fEmoji').value = a.emoji; $('fName').value = a.name;
+  $('fTarget').value = NUMERIC.has(a.type) ? a.target : '';
+  $('fUnit').value = a.type === 'time' ? '' : a.unit;
+  $('fStep').value = NUMERIC.has(a.type) ? a.step : '';
+  $('fItems').value = a.items.map(i => i.text).join('\n');
   $('formError').textContent = '';
-  pickColor = a.color; renderSwatches(); syncTypeFields();
+  pickColor = a.color; renderSwatches(); renderTypeFields(); renderDayChips();
   $('formTitle').textContent = 'Edit activity';
   $('saveAct').textContent = 'Save changes';
   $('cancelEdit').hidden = false;
   $('fName').focus();
+}
+function describe(a) {
+  const what = a.type === 'check' ? 'Yes or no'
+    : a.type === 'count' ? `Count: ${fmtAmt(a, a.target)}`
+    : a.type === 'time' ? `Time: ${fmtMin(a.target)} a day`
+    : a.type === 'limit' ? `Limit: max ${fmtAmt(a, a.target)}`
+    : `Checklist: ${a.items.length} ${a.items.length === 1 ? 'step' : 'steps'}`;
+  return `${what}, ${daysText(a.days)}`;
 }
 function renderManage() {
   const n = state.activities.length;
@@ -930,22 +1360,44 @@ function renderManage() {
   if (!n) { box.innerHTML = '<p class="empty">Nothing here yet. Add your first activity below.</p>'; return; }
   box.innerHTML = state.activities.map((a, i) =>
     `<div class="mrow" style="--c:${a.color}"><span class="dot"></span><span class="act-emoji">${esc(a.emoji)}</span>`
-    + `<div class="grow"><div class="act-name">${esc(a.name)}</div><div class="act-meta">${a.type === 'check' ? 'Yes or no' : `Target: ${fmtNum(a.target)} ${esc(a.unit)}`}</div></div>`
-    + `<button type="button" class="small-btn" data-mact="up" data-id="${a.id}" aria-label="Move up"${i === 0 ? ' disabled' : ''}>↑</button>`
-    + `<button type="button" class="small-btn" data-mact="down" data-id="${a.id}" aria-label="Move down"${i === n - 1 ? ' disabled' : ''}>↓</button>`
-    + `<button type="button" class="small-btn" data-mact="edit" data-id="${a.id}">Edit</button>`
-    + `<button type="button" class="small-btn danger-text" data-mact="del" data-id="${a.id}">Delete</button></div>`
+    + `<div class="grow"><div class="act-name">${esc(a.name)}</div><div class="act-meta">${esc(describe(a))}</div></div>`
+    + `<button type="button" class="small-btn" data-mact="up" data-id="${esc(a.id)}" aria-label="Move up"${i === 0 ? ' disabled' : ''}>↑</button>`
+    + `<button type="button" class="small-btn" data-mact="down" data-id="${esc(a.id)}" aria-label="Move down"${i === n - 1 ? ' disabled' : ''}>↓</button>`
+    + `<button type="button" class="small-btn" data-mact="edit" data-id="${esc(a.id)}">Edit</button>`
+    + `<button type="button" class="small-btn danger-text" data-mact="del" data-id="${esc(a.id)}">Delete</button></div>`
   ).join('');
 }
+function openManage(focusForm) {
+  resetForm(); renderManage(); $('manageDlg').showModal();
+  if (focusForm) $('fName').focus();
+}
 
-$('manageBtn').addEventListener('click', () => { resetForm(); renderManage(); $('manageDlg').showModal(); });
+$('manageBtn').addEventListener('click', () => openManage(false));
+$('addRow').addEventListener('click', () => openManage(true));
 $('manageDlg').addEventListener('close', resetForm);
-$('fType').addEventListener('change', syncTypeFields);
+$('fTypes').addEventListener('click', e => {
+  const b = e.target.closest('[data-type]');
+  if (!b) return;
+  fType = b.dataset.type; $('formError').textContent = '';
+  renderTypeFields();
+});
+$('fTarget').addEventListener('input', renderTypeFields);
+$('fDays').addEventListener('click', e => {
+  const b = e.target.closest('[data-day]');
+  if (!b) return;
+  const dn = Number(b.dataset.day);
+  if (fDays.has(dn)) {
+    if (fDays.size === 1) { $('fDaysHint').textContent = 'Keep at least one day.'; return; }
+    fDays.delete(dn);
+  } else fDays.add(dn);
+  renderDayChips();
+});
 $('fColors').addEventListener('click', e => {
   const b = e.target.closest('[data-color]');
   if (b) { pickColor = b.dataset.color; renderSwatches(); }
 });
 $('cancelEdit').addEventListener('click', resetForm);
+
 $('manageList').addEventListener('click', e => {
   const b = e.target.closest('[data-mact]');
   if (!b) return;
@@ -959,28 +1411,51 @@ $('manageList').addEventListener('click', e => {
     case 'del':
       if (!confirm(`Delete “${a.name}” and all of its history?`)) return;
       arr.splice(i, 1);
-      for (const d of Object.keys(state.logs)) { delete state.logs[d].values[a.id]; cleanup(d); }
+      delete state.timers[a.id];
+      if (focusId === a.id) closeFocus();
+      for (const d of Object.keys(state.logs)) {
+        const l = state.logs[d];
+        delete l.values[a.id];
+        if (l.checks) delete l.checks[a.id];
+        cleanup(d);
+      }
       if (editingId === a.id) resetForm();
       break;
   }
   save(); renderManage(); renderAll();
 });
+
 $('saveAct').addEventListener('click', () => {
+  const err = (msg, field) => { $('formError').textContent = msg; if (field) $(field).focus(); };
   const name = $('fName').value.trim();
-  if (!name) { $('formError').textContent = 'Give the activity a name.'; $('fName').focus(); return; }
-  const type = $('fType').value;
-  let target = 1, unit = '';
-  if (type === 'count') {
+  if (!name) return err('Give the activity a name.', 'fName');
+  const existing = editingId ? state.activities.find(x => x.id === editingId) : null;
+  let target = 1, unit = '', step = 1, items = [];
+  if (NUMERIC.has(fType)) {
     target = parseFloat($('fTarget').value);
-    if (!(target > 0)) { $('formError').textContent = 'Set a daily target above zero.'; $('fTarget').focus(); return; }
-    unit = $('fUnit').value.trim().slice(0, 12);
+    if (!(target > 0)) return err(fType === 'limit' ? 'Set a daily maximum above zero.' : 'Set a daily target above zero.', 'fTarget');
+    unit = fType === 'time' ? 'min' : $('fUnit').value.trim().slice(0, 12);
+    const st = parseFloat($('fStep').value);
+    step = st > 0 ? st : defaultStep(fType, target);
   }
+  if (fType === 'checklist') {
+    const lines = $('fItems').value.split('\n').map(x => x.trim()).filter(Boolean).slice(0, 12);
+    if (!lines.length) return err('Add at least one step, one per line.', 'fItems');
+    const pool = existing && existing.type === 'checklist' ? [...existing.items] : [];
+    items = lines.map(text => {
+      const k = pool.findIndex(o => o.text === text.slice(0, 40));
+      return k >= 0 ? pool.splice(k, 1)[0] : { id: uid(), text: text.slice(0, 40) };
+    });
+  }
+  $('formError').textContent = '';
+  const days = fDays.size === 7 ? [] : [...fDays].sort((x, y) => x - y);
   const emoji = $('fEmoji').value.trim() || '⭐';
-  if (editingId) {
-    const a = state.activities.find(x => x.id === editingId);
-    if (a) Object.assign(a, { name, emoji, type, target, unit, color: pickColor });
+  const fields = { name, emoji, type: fType, target, unit, step, days, items, color: pickColor };
+  if (existing) {
+    if (existing.type === 'time' && fType !== 'time') delete state.timers[existing.id];
+    Object.assign(existing, fields);
   } else {
-    state.activities.push({ id: uid(), name, emoji, type, target, unit, color: pickColor, createdAt: todayStr() });
+    state.activities.push(Object.assign({ id: uid(), createdAt: todayStr() }, fields));
   }
   save(); resetForm(); renderManage(); renderAll();
 });
@@ -988,10 +1463,12 @@ $('saveAct').addEventListener('click', () => {
 /* ---------- settings & backup ---------- */
 function fillSettings() {
   $('sTitle').value = state.settings.title;
+  $('sName').value = state.settings.name;
   $('sThresh').value = state.settings.threshold;
   $('sThreshVal').textContent = state.settings.threshold + '%';
 }
 $('settingsBtn').addEventListener('click', () => { fillSettings(); $('settingsDlg').showModal(); });
+$('sName').addEventListener('input', e => { state.settings.name = e.target.value.trim().slice(0, 30); save(); renderHeader(); });
 $('sTitle').addEventListener('input', e => { state.settings.title = e.target.value.trim().slice(0, 40) || 'Daily Momentum'; save(); renderHeader(); });
 $('sThresh').addEventListener('input', e => {
   state.settings.threshold = Number(e.target.value);
@@ -1032,7 +1509,7 @@ $('importFile').addEventListener('change', e => {
       const obj = JSON.parse(reader.result);
       if (!obj || !Array.isArray(obj.activities) || !obj.logs || typeof obj.logs !== 'object') throw new Error('Not a backup');
       if (!confirm('Replace everything on this dashboard with the backup?')) return;
-      state = normalize(obj); save();
+      state = normalize(obj); checkBadges(true); save();
       selected = todayStr(); fillSettings(); renderAll();
       $('exportMsg').textContent = 'Backup imported.';
     } catch (err) {
@@ -1052,7 +1529,7 @@ $('resetBtn').addEventListener('click', () => {
   toast('Dashboard erased');
 });
 
-// Click on the dim backdrop closes a dialog
+// A click on the dim backdrop closes a dialog
 for (const id of ['manageDlg', 'settingsDlg']) {
   $(id).addEventListener('click', e => {
     const dlg = e.currentTarget;
@@ -1062,25 +1539,252 @@ for (const id of ['manageDlg', 'settingsDlg']) {
   });
 }
 
-/* ---------- day rollover ---------- */
+/* ---------- weekly review ---------- */
+function weekStart(d) { return addDays(d, -((parse(d).getDay() + 6) % 7)); }
+function avgScore(from, to) {
+  const t = todayStr(); let sum = 0, n = 0;
+  for (let d = from, i = 0; d <= to && d <= t && i < 31; d = addDays(d, 1), i++) {
+    if (overallSkip(d)) continue;
+    if (d === t && !dayHit(d)) continue;
+    sum += dayScore(d); n++;
+  }
+  return n ? sum / n : null;
+}
+function renderWeek() {
+  const t = todayStr(), first = earliest(), ws = weekStart(t), offset = daysBetween(ws, t);
+  const short = s => parse(s).toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+  $('weekRange').textContent = `${short(ws)} to ${short(addDays(ws, 6))}`;
+  const cur = avgScore(ws, t), prev = avgScore(addDays(ws, -7), addDays(ws, offset - 7));
+  $('weekPct').textContent = cur === null ? '–' : Math.round(cur * 100) + '%';
+  const dEl = $('weekDelta');
+  if (cur !== null && prev !== null) {
+    const pts = Math.round((cur - prev) * 100);
+    dEl.className = 'delta' + (pts > 0 ? ' up' : pts < 0 ? ' down' : '');
+    dEl.textContent = pts > 0 ? `▲ ${pts} points vs last week` : pts < 0 ? `▼ ${-pts} points vs last week` : 'Level with last week';
+  } else {
+    dEl.className = 'delta';
+    dEl.textContent = cur === null ? 'Finish a day to start your week' : 'No last week to compare yet';
+  }
+
+  let bars = '';
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(ws, i), dt = parse(d);
+    let st = 'future', h = 0, label = 'Coming up';
+    if (d <= t) {
+      st = dayState(d, first);
+      const s = dayScore(d);
+      h = st === 'rest' ? 1 : (s || 0);
+      label = STATE_LABEL[st] + (s !== null && st !== 'rest' && st !== 'none' ? `, ${Math.round(s * 100)}%` : '');
+    }
+    const px = d <= t ? Math.max(Math.round(h * 64), 4) : 4;
+    bars += `<div class="wbar ${st}${d === t ? ' now' : ''}" title="${niceDate(d)}: ${label}"><div class="wtrack"><i style="height:${px}px"></i></div><span>${DAY_SHORT[dt.getDay()].slice(0, 2)}</span></div>`;
+  }
+  $('weekBars').innerHTML = bars;
+
+  const tips = [];
+  const rates = state.activities.map(a => {
+    let hits = 0, days = 0;
+    for (let d = ws; d <= t; d = addDays(d, 1)) {
+      if (d < a.createdAt || isRest(d) || !scheduled(a, d)) continue;
+      const hit = actDone(a, d);
+      if (d === t && !hit) continue;
+      days++; if (hit) hits++;
+    }
+    return { a, hits, days, r: days ? hits / days : 0 };
+  }).filter(x => x.days > 0);
+  const dayWord = n => n === 1 ? 'day' : 'days';
+  if (rates.length >= 2) {
+    const sorted = [...rates].sort((x, y) => y.r - x.r || y.days - x.days);
+    const top = sorted[0], low = sorted[sorted.length - 1];
+    tips.push(['🏅', `Most consistent: <b>${esc(top.a.name)}</b>, ${top.hits} of ${top.days} ${dayWord(top.days)}`]);
+    if (low.r < 1 && low.a !== top.a) tips.push(['🎯', `Needs attention: <b>${esc(low.a.name)}</b>, ${low.hits} of ${low.days} ${dayWord(low.days)}`]);
+  }
+  let best = null;
+  for (let d = ws; d <= t; d = addDays(d, 1)) {
+    if (overallSkip(d) || (d === t && !dayHit(d))) continue;
+    const s = dayScore(d);
+    if (!best || s >= best.s) best = { d, s };
+  }
+  if (best && best.s > 0) tips.push(['⭐', `Best day: <b>${parse(best.d).toLocaleDateString(undefined, { weekday: 'long' })}</b> at ${Math.round(best.s * 100)}%`]);
+  let mins = 0;
+  for (let d = ws; d <= t; d = addDays(d, 1)) for (const a of state.activities) if (a.type === 'time') mins += val(a, d);
+  if (mins > 0) tips.push(['⏱️', `Focused time: <b>${fmtMin(mins)}</b> this week`]);
+  $('weekInsights').innerHTML = tips.map(([i, html]) => `<li><span aria-hidden="true">${i}</span><span>${html}</span></li>`).join('');
+}
+
+/* ---------- milestones ---------- */
+function badgeStats() {
+  const first = earliest(), t = todayStr();
+  const best = bestStreak(dayHit, first, overallSkip);
+  const timeIds = new Set(state.activities.filter(a => a.type === 'time').map(a => a.id));
+  let perfect = 0, logged = 0, wins = 0, minutes = 0;
+  for (const [d, l] of Object.entries(state.logs)) {
+    if (l.note && l.note.trim()) wins++;
+    for (const [id, v] of Object.entries(l.values)) if (timeIds.has(id)) minutes += v;
+    if (l.rest) continue;
+    if (Object.keys(l.values).length || Object.keys(l.checks || {}).length) logged++;
+    const s = dayScore(d);
+    if (s !== null && s >= 0.9999) perfect++;
+  }
+  let comeback = false, prevMiss = false;
+  for (let d = first, i = 0; d <= t && i < 3660; d = addDays(d, 1), i++) {
+    if (overallSkip(d)) continue;
+    const h = dayHit(d);
+    if (h && prevMiss) { comeback = true; break; }
+    prevMiss = !h && d !== t;
+  }
+  return { best, perfect, logged, wins, minutes, comeback };
+}
+function checkBadges(silent) {
+  const st = badgeStats();
+  let got = 0;
+  for (const b of BADGES) {
+    if (state.badges[b.id] || !b.test(st)) continue;
+    state.badges[b.id] = todayStr(); got++;
+    if (!silent) toast(`Milestone unlocked: ${b.icon} ${b.name}`);
+  }
+  if (got) { save(); if (!silent) { confetti(); buzz([20, 60, 20]); } }
+  return got > 0;
+}
+function renderBadges() {
+  const n = BADGES.filter(b => state.badges[b.id]).length;
+  $('badgeCount').textContent = `${n} of ${BADGES.length} unlocked`;
+  $('badges').innerHTML = BADGES.map(b => {
+    const got = state.badges[b.id];
+    return `<div class="badge ${got ? 'got' : 'locked'}" title="${got ? 'Unlocked ' + niceDate(got) : 'Not unlocked yet'}"><span class="bi" aria-hidden="true">${b.icon}</span><b>${b.name}</b><small>${b.desc}</small></div>`;
+  }).join('');
+}
+
+/* ---------- journal ---------- */
+function renderJournal() {
+  const entries = Object.entries(state.logs).filter(([, l]) => l.note && l.note.trim()).sort((x, y) => (x[0] < y[0] ? 1 : -1));
+  $('winCount').textContent = entries.length ? `${entries.length} ${entries.length === 1 ? 'win' : 'wins'}` : '';
+  $('wins').innerHTML = entries.length
+    ? entries.slice(0, 150).map(([d, l]) => `<button type="button" class="win" data-date="${d}"><time datetime="${d}">${niceDate(d)}</time><p>${esc(l.note.trim())}</p></button>`).join('')
+    : '<p class="empty">Each day, write one win in the box under your activities. They collect here so you can reread them on hard days.</p>';
+}
+$('wins').addEventListener('click', e => {
+  const b = e.target.closest('[data-date]');
+  if (b) { setTab('today'); go(b.dataset.date); }
+});
+$('writeWin').addEventListener('click', () => {
+  setTab('today'); go(todayStr());
+  const n = $('noteInput');
+  n.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+  setTimeout(() => n.focus({ preventScroll: true }), reduceMotion ? 0 : 350);
+});
+
+/* ---------- tabs ---------- */
+function setTab(tab) {
+  if (!TABS.includes(tab)) tab = 'today';
+  const changed = document.body.dataset.tab !== tab;
+  document.body.dataset.tab = tab;
+  document.querySelectorAll('#tabbar [data-go]').forEach(b => {
+    if (b.dataset.go === tab) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+  });
+  if (changed && window.matchMedia && matchMedia('(max-width: 899px)').matches) window.scrollTo(0, 0);
+  if (tab === 'progress') { heatScrolled = false; renderHeat(); }
+}
+$('tabbar').addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if (b) { setTab(b.dataset.go); buzz(6); }
+});
+
+/* ---------- focus mode ---------- */
+let focusId = null, wakeLock = null;
+async function lockScreen() {
+  try {
+    if ('wakeLock' in navigator && !wakeLock) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (_) { wakeLock = null; }
+}
+function unlockScreen() { if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; } }
+function openFocus(a) {
+  focusId = a.id;
+  const dlg = $('focusDlg');
+  dlg.style.setProperty('--c', a.color);
+  dlg.style.setProperty('--on-c', textOn(a.color));
+  $('focusName').textContent = `${a.emoji} ${a.name}`;
+  $('focusHint').hidden = !('wakeLock' in navigator);
+  updateFocus();
+  if (!dlg.open) dlg.showModal();
+  lockScreen();
+}
+function updateFocus() {
+  if (!focusId) return;
+  const a = state.activities.find(x => x.id === focusId), t = state.timers[focusId];
+  if (!a || !t) { closeFocus(); return; }
+  const elapsed = Date.now() - t.start;
+  $('focusClock').textContent = fmtClock(elapsed);
+  const doneMin = val(a, t.date) + elapsed / 60000;
+  const C = 2 * Math.PI * 54, fg = $('focusFg');
+  fg.style.strokeDasharray = C.toFixed(2);
+  fg.style.strokeDashoffset = (C * (1 - Math.min(doneMin / a.target, 1))).toFixed(2);
+  $('focusSub').textContent = doneMin >= a.target
+    ? `Daily target reached: ${fmtMin(doneMin)} today`
+    : `${fmtMin(doneMin)} today, ${fmtMin(a.target - doneMin)} to go`;
+}
+function closeFocus() {
+  focusId = null;
+  const dlg = $('focusDlg');
+  if (dlg.open) dlg.close();
+  unlockScreen();
+}
+$('focusMin').addEventListener('click', closeFocus);
+$('focusStop').addEventListener('click', () => {
+  const a = state.activities.find(x => x.id === focusId);
+  closeFocus();
+  if (a) stopTimer(a);
+});
+$('focusDlg').addEventListener('cancel', e => { e.preventDefault(); closeFocus(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && focusId) lockScreen(); });
+
+/* ---------- swipe between days ---------- */
+{
+  const panel = $('dayPanel');
+  let sx = null, sy = 0, st = 0;
+  panel.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1 || e.target.closest('input, textarea, .items, .counter')) { sx = null; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+  }, { passive: true });
+  panel.addEventListener('touchend', e => {
+    if (sx === null) return;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    sx = null;
+    if (Date.now() - st < 600 && Math.abs(dx) > 70 && Math.abs(dy) < 45) {
+      const next = addDays(selected, dx < 0 ? 1 : -1);
+      if (next <= todayStr()) { go(next); buzz(6); }
+    }
+  }, { passive: true });
+}
+
+/* ---------- day rollover & resize ---------- */
 function checkRollover() {
   const t = todayStr();
   if (t !== lastToday) { if (selected === lastToday) selected = t; lastToday = t; renderAll(); }
 }
 setInterval(checkRollover, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkRollover(); });
-
 let resizeTimer;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderHero, 150); });
 
 /* ---------- start ---------- */
 if (startupWarning) showBanner(startupWarning);
+checkBadges(true);
 save();
 renderAll();
+setTab(new URLSearchParams(location.search).get('tab') || 'today');
 
-/* ---------- installable app ---------- */
+/* ---------- installable app (only active when hosted) ---------- */
 const isStandalone = () => !!((window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true);
 if ('serviceWorker' in navigator && window.isSecureContext && location.protocol !== 'file:') {
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController) { toast('Updated to the latest version'); setTimeout(() => location.reload(), 700); }
+    hadController = true;
+  });
   window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
 let installPrompt = null;
